@@ -1,12 +1,20 @@
 package dev.Fjc.fjCommandStarter.file;
 
 import dev.Fjc.fjCommandStarter.FjCommandStarter;
+import dev.Fjc.fjCommandStarter.event.CommandState;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class FileLoader {
 
@@ -29,7 +37,9 @@ public class FileLoader {
 
     public void loadDefaults() {
         reference.addDefault("isEnabled", true);
-        reference.addDefault("commands", new ArrayList<>());
+        Arrays.stream(CommandState.values())
+                .map(state -> state.toString().toLowerCase())
+                .forEach(action -> reference.addDefault("commands" + action, new ArrayList<>()));
 
 
         reference.options().copyDefaults(true);
@@ -37,6 +47,14 @@ public class FileLoader {
 
     public @Nullable List<String> getCommandList() {
         return reference.getStringList("commands");
+    }
+
+
+    public List<String> getCommands(CommandState state) {
+
+        String parse = state.toString().toLowerCase();
+
+        return reference.getStringList("commands" + parse);
     }
 
     public void reload() {

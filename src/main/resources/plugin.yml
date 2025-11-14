@@ -1,8 +1,12 @@
 name: fjCommandStarter
-version: '0.1-b'
+version: '{project.version}'
 main: dev.Fjc.fjCommandStarter.FjCommandStarter
 api-version: '1.21'
-prefix: StackResizer
+prefix: fjCommandStarter
 load: STARTUP
 authors: [ Fjc ]
-description: Sets the stack size for any item
+description: Runs a set of commands at specified runtimes.
+
+commands:
+  fjCommandStarter:
+    description: A description. Could not be bothered.

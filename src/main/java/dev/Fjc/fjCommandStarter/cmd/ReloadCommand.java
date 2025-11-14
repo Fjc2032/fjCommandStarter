@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+@Deprecated
 public class ReloadCommand implements TabExecutor {
 
     @Override
@@ -17,7 +18,7 @@ public class ReloadCommand implements TabExecutor {
             return false;
         }
 
-        if (args.length == 1) {
+        if (args.length == 1 && args[0].equals("reload")) {
             FileLoader fileLoader = FjCommandStarter.getLoader();
             if (fileLoader != null) fileLoader.reload();
             return true;

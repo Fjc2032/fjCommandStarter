@@ -1,5 +1,6 @@
 package dev.Fjc.fjCommandStarter;
 
+import dev.Fjc.fjCommandStarter.cmd.GetCommandsCommand;
 import dev.Fjc.fjCommandStarter.cmd.ReloadCommand;
 import dev.Fjc.fjCommandStarter.event.ServerListener;
 import dev.Fjc.fjCommandStarter.file.FileLoader;
@@ -32,8 +33,9 @@ public final class FjCommandStarter extends JavaPlugin {
         var obj = getServer().getPluginCommand("fjCommandStarter");
         if (obj == null) {
             getLogger().warning("Something went wrong while attempting to initialize the command!");
-        }
-        obj.setExecutor(new ReloadCommand());
+            getLogger().warning("The PluginCommand instance is null for some reason...");
+            getLogger().warning("Either a /reload or incompatible version?");
+        } else obj.setExecutor(new GetCommandsCommand());
         loader.build();
         loader.loadDefaults();
     }
@@ -42,7 +44,7 @@ public final class FjCommandStarter extends JavaPlugin {
         return loader;
     }
 
-    public static FjCommandStarter getInstance() {
+    public static @Nullable FjCommandStarter getInstance() {
         return instance;
     }
 }

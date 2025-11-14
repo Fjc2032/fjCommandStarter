@@ -6,7 +6,7 @@
 
     <groupId>dev.Fjc</groupId>
     <artifactId>fjCommandStarter</artifactId>
-    <version>0.1-b</version>
+    <version>0.1.0-b</version>
     <packaging>jar</packaging>
 
     <name>fjCommandStarter</name>
