@@ -1,17 +1,48 @@
 package dev.Fjc.fjCommandStarter;
 
+import dev.Fjc.fjCommandStarter.cmd.ReloadCommand;
+import dev.Fjc.fjCommandStarter.event.ServerListener;
+import dev.Fjc.fjCommandStarter.file.FileLoader;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 
 public final class FjCommandStarter extends JavaPlugin {
 
+    private static FjCommandStarter instance;
+
+    private static FileLoader loader;
+
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        instance = this;
 
+        saveDefaultConfig();
+        init();
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        instance = null;
+    }
+
+    public void init() {
+        loader = new FileLoader(this);
+        getServer().getPluginManager().registerEvents(new ServerListener(), this);
+
+        var obj = getServer().getPluginCommand("fjCommandStarter");
+        if (obj == null) {
+            getLogger().warning("Something went wrong while attempting to initialize the command!");
+        }
+        obj.setExecutor(new ReloadCommand());
+        loader.build();
+        loader.loadDefaults();
+    }
+
+    public static @Nullable FileLoader getLoader() {
+        return loader;
+    }
+
+    public static FjCommandStarter getInstance() {
+        return instance;
     }
 }

@@ -2,26 +2,29 @@ package dev.Fjc.fjCommandStarter.file;
 
 import dev.Fjc.fjCommandStarter.FjCommandStarter;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class Config {
+public class FileLoader {
 
     private final FjCommandStarter plugin;
 
-    private File file;
+    private final File file;
 
     private final FileConfiguration reference;
 
-    public Config(FjCommandStarter plugin) {
+    public FileLoader(FjCommandStarter plugin) {
         this.plugin = plugin;
 
         this.file = new File(plugin.getDataFolder(), "config.yml");
         this.reference = plugin.getConfig();
+    }
+
+    public void build() {
+        if (!file.exists()) plugin.saveDefaultConfig();
     }
 
     public void loadDefaults() {
@@ -32,15 +35,12 @@ public class Config {
         reference.options().copyDefaults(true);
     }
 
-    public List<?> getCommandList() {
-        return reference.getList("commands", List.of()).stream()
-                .filter(Objects::nonNull)
-                .filter(obj -> obj instanceof String)
-                .toList();
+    public @Nullable List<String> getCommandList() {
+        return reference.getStringList("commands");
     }
 
-    public void reload() throws IOException {
-        reference.save(file);
+    public void reload() {
+        plugin.saveConfig();
     }
 
 }
